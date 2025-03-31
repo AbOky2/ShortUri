@@ -8,9 +8,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.matchesRegex;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,6 +35,22 @@ public class ShortUrlControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldRedirectToOriginalUrl() throws Exception {
+        String originalUrl = "https://www.google.com";
+        String response = mockMvc.perform(post("/shortUrl")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        String shortCode = response.replace("http://localhost:8080/", "");
+
+        mockMvc.perform(get("/" + shortCode))
+                .andExpect(status().isFound())
+                .andExpect(header().string("Location", originalUrl));
     }
 
 }
