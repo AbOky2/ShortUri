@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -26,5 +27,13 @@ public class ShortUrlServiceTest {
         String shortCode = service.createShortUrl(originalUrl);
         assertEquals("abc123", shortCode);
         verify(repository).save(any(ShortUrl.class));
+    }
+
+    @Test
+    public void ShouldThrowExceptionForEmptyUrl(){
+        String originalUrl = "";
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()
+                -> service.createShortUrl(originalUrl));
+        assertEquals("l'URL ne peut pas être vide", exception.getMessage());
     }
 }
