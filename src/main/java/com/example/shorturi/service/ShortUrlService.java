@@ -17,6 +17,7 @@ public class ShortUrlService {
     }
 
     public String createShortUrl(String originalUrl) {
+        System.out.println("Received originalUrl: '" + originalUrl + "'");
         if(originalUrl == null || originalUrl.trim().isEmpty()) {
             throw new IllegalArgumentException("l'URL ne peut pas être vide");
         }
