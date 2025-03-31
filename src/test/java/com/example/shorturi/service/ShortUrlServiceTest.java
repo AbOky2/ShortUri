@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -41,5 +43,14 @@ public class ShortUrlServiceTest {
         String originalUrl = "https://google.com";
         String shortCode = service.createShortUrl(originalUrl);
         assertNotEquals("abc123", shortCode);
+    }
+
+    @Test
+    public void shouldReturnOriginalShortCode(){
+        String originalUrl = "https://google.com";
+        String shortCode = "abc123";
+        when(repository.findById(shortCode)).thenReturn(Optional.of(new ShortUrl(originalUrl, shortCode)));
+        String result = service.getOriginalUrl(shortCode);
+        assertEquals("abc123", result);
     }
 }
