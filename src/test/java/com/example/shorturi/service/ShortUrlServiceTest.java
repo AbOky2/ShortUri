@@ -23,11 +23,8 @@ public class ShortUrlServiceTest {
     @Test
     public void shouldCreateShortUrl() {
         String originalUrl = "https://google.com";
-        when(repository.existsById(anyString())).thenReturn(false);
-        when(repository.save(any(ShortUrl.class))).thenReturn(new ShortUrl("abc123",originalUrl));
-
         String shortCode = service.createShortUrl(originalUrl);
         assertEquals("abc123", shortCode);
-        verify(repository.save(any(ShortUrl.class)));
+        verify(repository).save(any(ShortUrl.class));
     }
 }
