@@ -16,6 +16,6 @@ public class ShortUrlService {
         }
         ShortUrl shortUrl = new ShortUrl("abc123", originalUrl);
         repository.save(shortUrl);
-        return "abc123";
+        return "abd123";
     }
 }
