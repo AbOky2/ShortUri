@@ -8,8 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -35,5 +34,12 @@ public class ShortUrlServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()
                 -> service.createShortUrl(originalUrl));
         assertEquals("l'URL ne peut pas être vide", exception.getMessage());
+    }
+
+    @Test
+    public void shouldGenerateUniqueShortCode(){
+        String originalUrl = "https://google.com";
+        String shortCode = service.createShortUrl(originalUrl);
+        assertNotEquals("abc123", shortCode);
     }
 }
