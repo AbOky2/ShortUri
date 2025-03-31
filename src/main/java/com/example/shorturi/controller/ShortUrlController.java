@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 public class ShortUrlController {
     @Autowired
     private ShortUrlService service;
     @PostMapping("/shortUrl")
-    public ResponseEntity<String> shortUrl(@RequestBody String originalUrl) {
-        String shortCode = service.createShortUrl(originalUrl);
+    public ResponseEntity<String> shortUrl(@RequestBody UrlRequest request) {
+        String shortCode = service.createShortUrl(request.getOriginalUrl());
         return ResponseEntity.ok("http://localhost:8080/"+shortCode);
     }
 }
