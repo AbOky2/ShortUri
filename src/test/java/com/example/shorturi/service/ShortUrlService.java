@@ -11,6 +11,9 @@ public class ShortUrlService {
     }
 
     public String createShortUrl(String originalUrl) {
+        if(originalUrl == null || originalUrl.trim().isEmpty()) {
+            throw new IllegalArgumentException("l'URL ne peut pas être vide");
+        }
         ShortUrl shortUrl = new ShortUrl("abc123", originalUrl);
         repository.save(shortUrl);
         return "abc123";
