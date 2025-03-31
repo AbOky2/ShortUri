@@ -28,4 +28,13 @@ public class ShortUrlControllerTest {
                 .andExpect(content().string(matchesRegex("http://localhost:8080/[a-zA-Z0-9]{6}")));
     }
 
+    @Test
+    public void shouldReturnBadRequestForEmptyUrl() throws Exception {
+        String originalUrl = "";
+        mockMvc.perform(post("/shortUrl")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
+                .andExpect(status().isBadRequest());
+    }
+
 }
