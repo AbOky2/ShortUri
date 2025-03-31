@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.matchesRegex;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,7 +25,7 @@ public class ShortUrlControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("http://localhost:8080/abc123"));
+                .andExpect(content().string(matchesRegex("http://localhost:8080/[a-zA-Z0-9]{6}")));
     }
 
 }

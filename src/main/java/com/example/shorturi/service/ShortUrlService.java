@@ -3,9 +3,11 @@ package com.example.shorturi.service;
 
 import com.example.shorturi.model.ShortUrl;
 import com.example.shorturi.repository.ShortUrlRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+@Service
 public class ShortUrlService {
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int LENGTH = 6;
