@@ -4,7 +4,11 @@ package com.example.shorturi.service;
 import com.example.shorturi.model.ShortUrl;
 import com.example.shorturi.repository.ShortUrlRepository;
 
+import java.util.Random;
+
 public class ShortUrlService {
+    private static final String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int LENGTH = 6;
     private ShortUrlRepository repository;
     public ShortUrlService(ShortUrlRepository repository) {
         this.repository = repository;
@@ -14,8 +18,21 @@ public class ShortUrlService {
         if(originalUrl == null || originalUrl.trim().isEmpty()) {
             throw new IllegalArgumentException("l'URL ne peut pas être vide");
         }
-        ShortUrl shortUrl = new ShortUrl("abc123", originalUrl);
+        String shortCode = generateShortCode();
+        while(repository.existsById(shortCode)){
+            shortCode = generateShortCode();
+        }
+        ShortUrl shortUrl = new ShortUrl(shortCode, originalUrl);
         repository.save(shortUrl);
-        return "abd123";
+        return shortCode;
+    }
+
+    private String generateShortCode() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i <LENGTH; i++){
+            sb.append(CHARS.charAt(random.nextInt(CHARS.length())));
+        }
+        return sb.toString();
     }
 }
