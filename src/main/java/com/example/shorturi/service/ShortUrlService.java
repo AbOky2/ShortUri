@@ -37,4 +37,10 @@ public class ShortUrlService {
         }
         return sb.toString();
     }
+
+    public String getOriginalUrl(String shortCode) {
+        return repository.findById(shortCode)
+                .map(ShortUrl::getOriginalUrl)
+                .orElseThrow(() ->new RuntimeException("Url courte non trouvable"));
+    }
 }
