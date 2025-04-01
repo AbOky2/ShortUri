@@ -103,5 +103,28 @@ public class ShortUrlControllerTest {
                 .andExpect(content().json("[]"));
     }
 
+    @Test
+    public void shouldCountVisitsForShortCode() throws Exception {
+        String originalUrl = "https://www.google.com";
+        //on crée une url courte
+        String response = mockMvc.perform(post("/shortUrl")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        String shortCode = response.replace("http://localhost:8080/", "");
+
+        //effectuons 2 redirections
+        mockMvc.perform(get("/" + shortCode))
+                .andExpect(status().isFound());
+        mockMvc.perform(get("/" + shortCode))
+                .andExpect(status().isFound());
+
+        //et verifions le nombre de visites
+        mockMvc.perform(get("/visite/" + shortCode))
+                .andExpect(status().isOk())
+                .andExpect(content().json("2"));
+    }
+
 
 }
