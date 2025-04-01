@@ -75,10 +75,22 @@ public class ShortUrlControllerTest {
         mockMvc.perform(get("/shortUrls")
                 .param("originalUrl", originalUrl))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0]").value(shortCode1))
                 .andExpect(jsonPath("$[1]").value(shortCode2));
 
     }
+
+    @Test
+    public void shouldReturnEmptyListForNonExistingOriginalUrl() throws Exception {
+        String originalUrl = "https://www.google.com";
+        mockMvc.perform(get("/shortUrls")
+                .param("originalUrl", originalUrl))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
+
 
 }
