@@ -83,9 +83,19 @@ public class ShortUrlServiceTest {
 
         String result = service.getOriginalUrl(shortCode);
         assertEquals(originalUrl, result);
-        assertEquals(1, service.getVisitCount());
-
+        assertEquals(1, shortUrl.getVisitCount());
         verify(repository).save(shortUrl);
+    }
+
+    @Test
+    public void shouldReturnVisitCountForShortCode(){
+        String shortCode = "abc123";
+        ShortUrl shortUrl = new ShortUrl(shortCode,"https://google.com");
+        shortUrl.setVisitCount(3);
+        when(repository.findById(shortCode)).thenReturn(Optional.of(shortUrl));
+
+        long visitCount = service.getVisitCount(shortCode);
+        assertEquals(3, visitCount);
     }
 
 }

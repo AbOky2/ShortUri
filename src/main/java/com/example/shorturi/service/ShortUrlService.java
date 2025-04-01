@@ -51,4 +51,10 @@ public class ShortUrlService {
                 .stream().map(ShortUrl::getShortCode)
                 .collect(Collectors.toList());
     }
+
+    public long getVisitCount(String shortCode) {
+        return repository.findById(shortCode)
+                .map(ShortUrl::getVisitCount)
+                .orElseThrow(() -> new RuntimeException("Url courte non trouvable"));
+    }
 }
