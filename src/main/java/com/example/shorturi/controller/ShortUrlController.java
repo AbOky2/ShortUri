@@ -19,8 +19,9 @@ public class ShortUrlController {
 
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
+        String originalUrl = service.getOriginalUrl(shortCode);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .header("Location", "https://www.google.com")
+                .header("Location", originalUrl)
                 .build();
     }
 }

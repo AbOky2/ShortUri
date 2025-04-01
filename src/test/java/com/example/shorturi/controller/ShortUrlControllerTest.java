@@ -53,4 +53,24 @@ public class ShortUrlControllerTest {
                 .andExpect(header().string("Location", originalUrl));
     }
 
+    @Test
+    public void shouldListShortUrlsForOriginalUrl() throws Exception {
+        String originalUrl = "https://www.google.com";
+        //on crée 2 Urls courtes pour l'url originale
+        mockMvc.perform(post("/shortUrl")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/shortUrl")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/")
+                .param("originalUrl", originalUrl))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[\"[a-zA-Z0-9]{6}\", \"[a-zA-Z0-9]{6}\"]"));
+    }
+
 }
