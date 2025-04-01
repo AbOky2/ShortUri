@@ -67,10 +67,13 @@ public class ShortUrlControllerTest {
                 .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/")
+        mockMvc.perform(get("/shortUrls")
                 .param("originalUrl", originalUrl))
                 .andExpect(status().isOk())
-                .andExpect(content().json("[\"[a-zA-Z0-9]{6}\", \"[a-zA-Z0-9]{6}\"]"));
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0]").value("abc123"))
+                .andExpect(jsonPath("$[1]").value("def456"));
+
     }
 
 }

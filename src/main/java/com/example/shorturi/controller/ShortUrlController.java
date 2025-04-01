@@ -2,9 +2,13 @@ package com.example.shorturi.controller;
 
 import com.example.shorturi.service.ShortUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @RestController
@@ -23,5 +27,12 @@ public class ShortUrlController {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header("Location", originalUrl)
                 .build();
+    }
+
+    @GetMapping("/shortUrls")
+    public ResponseEntity<List<String>> listShortUrls(@RequestParam String originalUrl){
+        List<String> result = Arrays.asList("abc123","def456");
+        System.out.println("Returning: " + result);
+        return ResponseEntity.ok(result);
     }
 }
