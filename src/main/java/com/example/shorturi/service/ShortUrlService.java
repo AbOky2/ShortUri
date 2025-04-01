@@ -5,7 +5,9 @@ import com.example.shorturi.model.ShortUrl;
 import com.example.shorturi.repository.ShortUrlRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class ShortUrlService {
@@ -42,5 +44,11 @@ public class ShortUrlService {
         return repository.findById(shortCode)
                 .map(ShortUrl::getOriginalUrl)
                 .orElseThrow(() ->new RuntimeException("Url courte non trouvable"));
+    }
+
+    public List<String> listShortCodes(String originalUrl) {
+        return repository.findByOriginalUrl(originalUrl)
+                .stream().map(ShortUrl::getShortCode)
+                .collect(Collectors.toList());
     }
 }

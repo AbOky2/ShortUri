@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,5 +54,20 @@ public class ShortUrlServiceTest {
         when(repository.findById(shortCode)).thenReturn(Optional.of(new ShortUrl(originalUrl, shortCode)));
         String result = service.getOriginalUrl(shortCode);
         assertEquals("abc123", result);
+    }
+
+    @Test
+    public void shouldListShortCodesForOriginalUrl(){
+        String originalUrl = "https://google.com";
+        List<ShortUrl> shortUrls = Arrays.asList(
+                new ShortUrl("abc123", originalUrl),
+                new ShortUrl("def456", originalUrl)
+        );
+
+        when(repository.findByOriginalUrl(originalUrl)).thenReturn(shortUrls);
+        List<String> shortCodes = service.listShortCodes(originalUrl);
+        assertEquals(2, shortCodes.size());
+        assertTrue(shortCodes.contains("abc123"));
+        assertTrue(shortCodes.contains("def456"));
     }
 }
