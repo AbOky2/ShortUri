@@ -34,4 +34,10 @@ public class ShortUrlController {
         List<String> shortCodes = service.listShortCodes(originalUrl);
         return ResponseEntity.ok(shortCodes);
     }
+
+    @GetMapping("/visite/{shortCode}")
+    public ResponseEntity<Long> getVisite(@PathVariable String shortCode){
+        long visitCount = service.getVisitCount(shortCode);
+        return ResponseEntity.ok(visitCount);
+    }
 }
