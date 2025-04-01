@@ -1,5 +1,8 @@
 package com.example.shorturi.controller;
 
+import com.example.shorturi.repository.ShortUrlRepository;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ShortUrlControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    ShortUrlRepository repository;
+
+    @BeforeEach
+    void setUp() {
+        repository.deleteAll();
+    }
 
     @Test
     public void shouldCreateShortUrl() throws Exception {
