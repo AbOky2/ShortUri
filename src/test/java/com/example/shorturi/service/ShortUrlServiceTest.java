@@ -76,7 +76,7 @@ public class ShortUrlServiceTest {
         String originalUrl = "https://google.com";
         String shortCode = "abc123";
 
-        ShortUrl shortUrl = new ShortUrl(originalUrl, shortCode);
+        ShortUrl shortUrl = new ShortUrl(shortCode, originalUrl);
 
         when(repository.findById(shortCode)).thenReturn(Optional.of(shortUrl));
         when(repository.save(any(ShortUrl.class))).thenReturn(shortUrl);

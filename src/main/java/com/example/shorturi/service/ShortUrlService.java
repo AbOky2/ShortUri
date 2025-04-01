@@ -41,9 +41,11 @@ public class ShortUrlService {
     }
 
     public String getOriginalUrl(String shortCode) {
-        return repository.findById(shortCode)
-                .map(ShortUrl::getOriginalUrl)
-                .orElseThrow(() ->new RuntimeException("Url courte non trouvable"));
+        ShortUrl shortUrl = repository.findById(shortCode)
+                .orElseThrow(()-> new RuntimeException("Url courte non trouvable"));
+        shortUrl.incrementVisiteCount();
+        repository.save(shortUrl);
+        return shortUrl.getOriginalUrl();
     }
 
     public List<String> listShortCodes(String originalUrl) {
