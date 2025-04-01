@@ -126,5 +126,12 @@ public class ShortUrlControllerTest {
                 .andExpect(content().json("2"));
     }
 
+    @Test
+    public void ShouldReturnNotFoundForNonExistingShortCode() throws Exception {
+        String invalidShortCode = "xyz999";
+        mockMvc.perform(get("/visite/" + invalidShortCode))
+                .andExpect(status().isNotFound());
+    }
+
 
 }
