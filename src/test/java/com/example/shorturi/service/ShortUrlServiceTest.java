@@ -70,4 +70,22 @@ public class ShortUrlServiceTest {
         assertTrue(shortCodes.contains("abc123"));
         assertTrue(shortCodes.contains("def456"));
     }
+
+    @Test
+    public void shouldIncrementVisitCountOnGetOriginalUrl(){
+        String originalUrl = "https://google.com";
+        String shortCode = "abc123";
+
+        ShortUrl shortUrl = new ShortUrl(originalUrl, shortCode);
+
+        when(repository.findById(shortCode)).thenReturn(Optional.of(shortUrl));
+        when(repository.save(any(ShortUrl.class))).thenReturn(shortUrl);
+
+        String result = service.getOriginalUrl(shortCode);
+        assertEquals(originalUrl, result);
+        assertEquals(1, service.getVisitCount());
+
+        verify(repository).save(shortUrl);
+    }
+
 }
