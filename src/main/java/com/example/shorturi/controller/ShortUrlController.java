@@ -31,8 +31,7 @@ public class ShortUrlController {
 
     @GetMapping("/shortUrls")
     public ResponseEntity<List<String>> listShortUrls(@RequestParam String originalUrl){
-        List<String> result = Arrays.asList("abc123","def456");
-        System.out.println("Returning: " + result);
-        return ResponseEntity.ok(result);
+        List<String> shortCodes = service.listShortCodes(originalUrl);
+        return ResponseEntity.ok(shortCodes);
     }
 }

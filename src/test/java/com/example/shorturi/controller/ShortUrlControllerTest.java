@@ -57,22 +57,27 @@ public class ShortUrlControllerTest {
     public void shouldListShortUrlsForOriginalUrl() throws Exception {
         String originalUrl = "https://www.google.com";
         //on crée 2 Urls courtes pour l'url originale
-        mockMvc.perform(post("/shortUrl")
+        String response1 = mockMvc.perform(post("/shortUrl")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        String shortCode1 = response1.replace("http://localhost:8080/", "");
 
-        mockMvc.perform(post("/shortUrl")
+        String response2 = mockMvc.perform(post("/shortUrl")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"originalUrl\": \"" + originalUrl + "\"}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        String shortCode2 = response2.replace("http://localhost:8080/", "");
 
         mockMvc.perform(get("/shortUrls")
                 .param("originalUrl", originalUrl))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0]").value("abc123"))
-                .andExpect(jsonPath("$[1]").value("def456"));
+                .andExpect(jsonPath("$[0]").value(shortCode1))
+                .andExpect(jsonPath("$[1]").value(shortCode2));
 
     }
 
